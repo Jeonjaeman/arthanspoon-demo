@@ -80,33 +80,42 @@
     return Math.max(0, Math.min(1, -r.top / Math.max(1, total)));
   }
 
-  let last = 0;
-  function tick(now = performance.now()) {
-    const dt = Math.min(0.1, (now - (last || now)) / 1000); last = now;
+  const debug = /[?&]debug=1/.test(location.search) ? Object.assign(document.createElement('pre'), { style: 'position:fixed;left:8px;top:64px;z-index:99;background:rgba(0,0,0,.6);color:#0f0;font:11px/1.4 monospace;padding:6px 8px;margin:0;pointer-events:none' }) : null;
+  if (debug) document.body.append(debug);
+
+  let last = 0, lastTick = 0, ticks = 0;
+  function step(now = performance.now()) {
+    const dt = Math.min(0.1, (now - (last || now)) / 1000); last = now; lastTick = now; ticks++;
     const p = progress();
     target = p * (count - 1);
-    cur += (target - cur) * (1 - Math.exp(-dt * 14));   // 시간 기준 감쇠: 프레임 속도가 떨어져도(숨은 탭 등) 같은 속도로 따라감
+    // 시간 기준 감쇠: 프레임 속도가 떨어져도 같은 속도로 따라감. 모션 축소 설정이면 감쇠 없이 바로 맞춤
+    cur = reduced ? target : cur + (target - cur) * (1 - Math.exp(-dt * 14));
     const i = Math.round(cur);
     decodeWindow(Math.round(target));
     if (i !== shown) { if (draw(i)) { shown = i; if (poster) poster.classList.add('is-hidden'); } }
     stage.style.setProperty('--p', p.toFixed(4));
     stage.dataset.chapter = p < 0.3 ? '1' : p < 0.72 ? '2' : '3';
     stage.classList.toggle('is-end', p > 0.98);
-    raf = requestAnimationFrame(tick);
+    if (debug) debug.textContent = `p ${p.toFixed(3)}  frame ${i}/${count - 1}  shown ${shown}  blobs ${blobs.size}  bitmaps ${bitmaps.size}  ticks ${ticks}  ${set}`;
   }
+  function tick(now) { step(now); raf = requestAnimationFrame(tick); }
 
   async function init() {
     try { manifest = await (await fetch('assets/frames/manifest.json')).json(); } catch { manifest = null; }
-    if (!manifest || reduced) { stage.classList.add('is-static'); return; }  // 프레임 없거나 모션 축소 설정 → 포스터만
+    if (!manifest) { stage.classList.add('is-static'); return; }   // 프레임 없음 → 포스터만
+    if (reduced) stage.classList.add('is-reduced');                 // 모션 축소: 그레인·힌트만 끄고 스크롤 연동은 유지
     count = manifest[set].count;
     resize();
     addEventListener('resize', resize, { passive: true });
     fetchAll();
     raf = requestAnimationFrame(tick);
+    // rAF가 멈추거나 느려진 환경(숨은 탭, 절전 모드)에서도 스크롤에는 바로 반응
+    addEventListener('scroll', () => { if (performance.now() - lastTick > 90) step(); }, { passive: true });
+    setInterval(() => { if (performance.now() - lastTick > 300) step(); }, 250);
   }
   init();
-  // 검증용 훅: 숨은 탭처럼 rAF가 멈춘 환경에서 tick을 직접 돌려 볼 수 있게 한다
-  window.__entry = { tick: (t) => { cancelAnimationFrame(raf); tick(t ?? performance.now()); }, state: () => ({ set, count, cur, target, shown, blobs: blobs.size, bitmaps: bitmaps.size }) };
+  // 검증용 훅: tick을 직접 돌려 볼 수 있게 한다
+  window.__entry = { tick: (t) => step(t ?? performance.now()), state: () => ({ set, count, cur, target, shown, blobs: blobs.size, bitmaps: bitmaps.size, ticks }) };
 
   // 사운드: 파일이 있을 때만 버튼 노출, 기본은 꺼짐(브라우저 자동재생 제한)
   const snd = document.getElementById('sndBtn');
