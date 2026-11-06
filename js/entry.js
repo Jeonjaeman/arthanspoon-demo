@@ -80,10 +80,12 @@
     return Math.max(0, Math.min(1, -r.top / Math.max(1, total)));
   }
 
-  function tick() {
+  let last = 0;
+  function tick(now = performance.now()) {
+    const dt = Math.min(0.1, (now - (last || now)) / 1000); last = now;
     const p = progress();
     target = p * (count - 1);
-    cur += (target - cur) * 0.22;              // 가벼운 감쇠로 스크롤 스텝 완화
+    cur += (target - cur) * (1 - Math.exp(-dt * 14));   // 시간 기준 감쇠: 프레임 속도가 떨어져도(숨은 탭 등) 같은 속도로 따라감
     const i = Math.round(cur);
     decodeWindow(Math.round(target));
     if (i !== shown) { if (draw(i)) { shown = i; if (poster) poster.classList.add('is-hidden'); } }
