@@ -105,6 +105,8 @@
     raf = requestAnimationFrame(tick);
   }
   init();
+  // 검증용 훅: 숨은 탭처럼 rAF가 멈춘 환경에서 tick을 직접 돌려 볼 수 있게 한다
+  window.__entry = { tick: (t) => { cancelAnimationFrame(raf); tick(t ?? performance.now()); }, state: () => ({ set, count, cur, target, shown, blobs: blobs.size, bitmaps: bitmaps.size }) };
 
   // 사운드: 파일이 있을 때만 버튼 노출, 기본은 꺼짐(브라우저 자동재생 제한)
   const snd = document.getElementById('sndBtn');
