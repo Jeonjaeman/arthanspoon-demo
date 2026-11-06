@@ -17,6 +17,7 @@
   const blobs = new Map();     // i → Blob (압축본, 전부 보관: 5~6MB)
   const bitmaps = new Map();   // i → ImageBitmap (디코드본, 현재 위치 ±WIN만 보관)
   const pending = new Set();
+  const urgent = new Set();    // 현재 위치 근처라 순서를 앞당겨 받는 중인 프레임
   const WIN = 16, AHEAD = 10;
 
   let target = 0, shown = -1, cur = 0, raf = 0, dpr = 1;
@@ -30,9 +31,11 @@
     shown = -1; // 다음 프레임에서 다시 그림
   }
 
+  const inflight = new Set();
   async function fetchOne(i) {
-    if (blobs.has(i) || i < 0 || i >= count) return;
-    try { const r = await fetch(src(set, i)); if (r.ok) blobs.set(i, await r.blob()); } catch {}
+    if (blobs.has(i) || i < 0 || i >= count || inflight.has(i)) return;
+    inflight.add(i);
+    try { const r = await fetch(src(set, i)); if (r.ok) blobs.set(i, await r.blob()); } catch {} finally { inflight.delete(i); }
   }
   // 1) 처음 12장을 먼저, 2) 나머지는 순서대로 뒤에서 조용히 (한 번에 4개)
   async function fetchAll() {
@@ -46,7 +49,8 @@
   function decodeWindow(center) {
     const lo = Math.max(0, center - 4), hi = Math.min(count - 1, center + AHEAD);
     for (let i = lo; i <= hi; i++) {
-      if (bitmaps.has(i) || pending.has(i) || !blobs.has(i)) continue;
+      if (!blobs.has(i)) { if (!urgent.has(i)) { urgent.add(i); fetchOne(i).finally(() => urgent.delete(i)); } continue; }  // 순차 로딩보다 앞서 현재 위치부터 받는다
+      if (bitmaps.has(i) || pending.has(i)) continue;
       pending.add(i);
       createImageBitmap(blobs.get(i)).then(b => { bitmaps.set(i, b); }).catch(() => {}).finally(() => pending.delete(i));
     }
