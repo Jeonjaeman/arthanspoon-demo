@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>아트한스푼 — 동네 카페에 예술 한 스푼</title>
+<meta name="description" content="동네 카페·매장과 작가를 연결해 팝업 전시를 여는 서비스. 조건을 입력하면 맞는 공간과 작가를 제안합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="preload" as="image" href="assets/img/door-h.webp" media="(orientation: landscape)">
+<link rel="preload" as="image" href="assets/img/door-v.webp" media="(orientation: portrait)">
+</head>
+<body>
+
+<header class="hdr">
+  <a class="logo" href="#top" aria-label="아트한스푼 홈">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3c4 0 7 3.2 7 7.4 0 3.6-2.3 6.4-5.4 7.2V27a1.6 1.6 0 0 1-3.2 0V17.6C11.3 16.8 9 14 9 10.4 9 6.2 12 3 16 3z" fill="#d9a05b"/><circle cx="19.5" cy="8.5" r="2.2" fill="#f3e9d8"/></svg>
+    아트한스푼
+  </a>
+  <nav class="nav">
+    <a href="#cases">전시 사례</a><a href="#artists">작가</a><a href="#spaces">공간</a><a href="#docent">QR 도슨트</a>
+  </nav>
+  <a class="btn btn--sm" href="#match">맞춤 제안 받기</a>
+</header>
+
+<!-- 진입 연출: 문 앞 → 문이 열리고 → 전시 공간. 첫 화면부터 제목·CTA가 보인다. -->
+<div class="entry-track" id="top">
+  <section class="entry" id="entry" data-chapter="1" aria-label="소개 연출">
+    <picture class="poster" id="entryPoster">
+      <source srcset="assets/img/door-v.webp" media="(orientation: portrait)">
+      <img src="assets/img/door-h.webp" alt="저녁 골목, 불이 켜진 작은 카페의 문" fetchpriority="high">
+    </picture>
+    <canvas id="entryCanvas" aria-hidden="true"></canvas>
+    <div class="vig"></div><div class="grain"></div>
+    <div class="hero">
+      <div>
+        <p class="eyebrow">동네 카페 × 작가 · 팝업 전시</p>
+        <h1>동네 카페에<br><em>예술 한 스푼</em></h1>
+        <p>카페·매장의 빈 벽과 작가의 작품을 잇습니다.<br>조건만 알려주시면, 맞는 공간과 작가를 제안해 드려요.</p>
+        <div class="cta">
+          <a class="btn" href="#match">맞춤 제안 받기</a>
+          <a class="btn btn--ghost" href="#cases">전시 사례 보기</a>
+        </div>
+      </div>
+    </div>
+    <div class="cap cap--1"><b>01 · 골목 끝</b><span>퇴근길에 늘 지나던<br>작은 카페</span></div>
+    <div class="cap cap--2"><b>02 · 문을 열면</b><span>오늘은 조금<br>다른 불빛</span></div>
+    <div class="cap cap--3"><b>03 · 전시가 됩니다</b><span>커피 한 잔 값으로 만나는<br>동네 작가의 그림</span></div>
+    <div class="hint"><i></i>스크롤</div>
+    <button class="snd" id="sndBtn" hidden>소리 켜기</button>
+    <div class="fade"></div>
+  </section>
+</div>
+
+<section class="block" id="about">
+  <div class="wrap">
+    <p class="eyebrow">아트한스푼은</p>
+    <h2>카페는 빈 벽을, 작가는 작품을 내놓습니다.<br>우리는 둘을 잇습니다.</h2>
+    <p class="lead">큰 갤러리가 아니어도 전시는 열립니다. 동네 카페·서점·꽃집의 벽 한 면이면 충분해요. 작가는 작품을 걸 곳을, 공간은 손님이 머물 이유를 얻습니다. 아트한스푼이 조건을 맞추고 설치·QR 도슨트·홍보까지 함께합니다.</p>
+    <div class="stats">
+      <div><b>12</b><span>참여 공간 (예시)</span></div>
+      <div><b>38</b><span>등록 작가 (예시)</span></div>
+      <div><b>9</b><span>열린 팝업 전시 (예시)</span></div>
+    </div>
+    <p class="demo">* 숫자는 시안용 예시입니다. 실제 수치로 교체합니다.</p>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <div class="wrap">
+    <p class="eyebrow">어떻게 진행되나요</p>
+    <h2>조건 입력부터 전시 오픈까지, 세 단계</h2>
+    <div class="steps">
+      <div><h3>조건을 알려주세요</h3><p>작가는 작품 크기·수량·희망 지역·일정을, 공간은 벽 면적·설치 조건·운영 시간을 입력합니다.</p></div>
+      <div><h3>후보를 받거나, 운영자가 찾아드려요</h3><p>지역·일정·설치 조건이 맞는 후보를 보여드립니다. 아직 후보가 없는 지역이면 입력한 조건 그대로 운영자에게 매칭을 요청할 수 있어요.</p></div>
+      <div><h3>전시를 엽니다</h3><p>설치 일정 조율, 작품별 QR 도슨트 발급, 공개 페이지와 SNS 홍보 자료까지 함께 준비합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="cases">
+  <div class="wrap">
+    <p class="eyebrow">전시 사례</p>
+    <h2>이미 동네 곳곳에서 열리고 있어요</h2>
+    <div class="grid grid--3">
+      <article class="card"><figure><img src="assets/img/case-1.webp" alt="카페 벽에 걸린 작은 회화 6점" loading="lazy"></figure><div class="body"><span class="tag">회화 · 2주</span><h3>골목 카페 × 풍경 회화</h3><p>손님 좌석 뒤 벽 한 면에 소품 6점. 전시 기간 주말 방문객이 늘었어요.</p></div></article>
+      <article class="card"><figure><img src="assets/img/case-2.webp" alt="베이커리 창가에 줄로 걸린 일러스트" loading="lazy"></figure><div class="body"><span class="tag">일러스트 · 3주</span><h3>동네 베이커리 × 일러스트</h3><p>창가에 줄과 집게로 가볍게 설치. 못 자국 없이 끝나는 전시.</p></div></article>
+      <article class="card"><figure><img src="assets/img/case-3.webp" alt="레코드 숍 테이블 위 도자기 전시" loading="lazy"></figure><div class="body"><span class="tag">도자 · 1주</span><h3>레코드 숍 × 도자 소품</h3><p>긴 테이블 하나로 열린 전시. 작품별 QR로 작가 설명과 구매 문의 연결.</p></div></article>
+    </div>
+    <p class="demo">* 사례 사진·문구는 시안용 예시입니다. 실제 전시 자료로 교체합니다.</p>
+  </div>
+</section>
+
+<section class="block artists" id="artists">
+  <div class="wrap">
+    <p class="eyebrow">작가</p>
+    <h2>동네에서 만나는 작가들</h2>
+    <div class="grid grid--3">
+      <article class="card"><figure><img src="assets/img/art-1.webp" alt="따뜻한 색의 추상 풍경 유화" loading="lazy"></figure><div class="body"><span class="tag">유화 · 추상 풍경</span><h3>김하늘</h3><p>저녁 언덕의 색을 두꺼운 붓질로. 소품 위주, 설치 조건 자유.</p></div></article>
+      <article class="card"><figure><img src="assets/img/art-2.webp" alt="밤 골목과 카페를 그린 과슈 일러스트" loading="lazy"></figure><div class="body"><span class="tag">과슈 · 일러스트</span><h3>박도윤</h3><p>동네 골목의 밤을 단순한 형태로. 창가·줄 설치에 적합.</p></div></article>
+      <article class="card"><figure><img src="assets/img/art-3.webp" alt="카페 손님을 그린 수채 드로잉" loading="lazy"></figure><div class="body"><span class="tag">수채 · 드로잉</span><h3>이서연</h3><p>카페 안 사람들의 선 드로잉. 작은 액자 10점 세트.</p></div></article>
+    </div>
+    <p class="demo">* 작가명·작품은 시안용 예시입니다.</p>
+  </div>
+</section>
+
+<section class="block" id="spaces">
+  <div class="wrap">
+    <p class="eyebrow">공간</p>
+    <h2>벽 한 면이 비어 있다면, 전시가 열릴 수 있어요</h2>
+    <div class="grid grid--2">
+      <article class="card"><figure><img src="assets/img/space-1.webp" alt="레일 조명이 있는 빈 카페 벽" loading="lazy"></figure><div class="body"><span class="tag">카페 · 레일 조명</span><h3>빈 벽 6m, 레일 조명 있음</h3><p>걸이 레일과 스팟 조명이 있어 액자 설치가 바로 가능한 공간.</p></div></article>
+      <article class="card"><figure><img src="assets/img/space-2.webp" alt="벽돌 벽과 선반이 있는 꽃집 카페" loading="lazy"></figure><div class="body"><span class="tag">꽃집 카페 · 선반</span><h3>벽돌 벽 + 선반</h3><p>소품·도자·드로잉처럼 작은 작품을 선반에 올리는 전시에 적합.</p></div></article>
+    </div>
+    <p style="margin-top:22px"><a class="btn btn--ghost" href="#match" data-role="space">공간 등록하기</a></p>
+  </div>
+</section>
+
+<!-- 품목 3 핵심: 조건 입력 → 후보 추천 → 후보 없으면 운영자 매칭 요청 -->
+<section class="block match" id="match">
+  <div class="wrap">
+    <p class="eyebrow">맞춤 제안 받기</p>
+    <h2>조건을 입력하면 맞는 상대를 제안해 드려요</h2>
+    <p class="lead">베타 기간에는 등록된 공간·작가가 아직 많지 않습니다. 후보가 없어도 괜찮아요. 입력한 조건 그대로 운영자가 직접 찾아 연결해 드립니다.</p>
+    <form class="panel" id="matchForm" novalidate>
+      <div class="seg" role="group" aria-label="누구신가요">
+        <button type="button" data-role="artist" aria-pressed="true">작가예요</button>
+        <button type="button" data-role="space" aria-pressed="false">공간주예요</button>
+      </div>
+      <div class="field"><label for="region">지역</label>
+        <select id="region" name="region">
+          <option value="">선택</option><option>경기 양주시</option><option>경기 의정부시</option><option>서울 노원구</option><option>서울 마포구</option><option>서울 성동구</option><option>그 외</option>
+        </select></div>
+      <div class="field"><label for="month">희망 일정</label><input id="month" name="month" type="month" min="2026-11"></div>
+      <div class="field"><label>설치 조건 <small id="condHint">(작품을 어떻게 설치할 수 있나요)</small></label>
+        <div class="chips">
+          <label><input type="checkbox" name="cond" value="wall"> 벽에 걸기</label>
+          <label><input type="checkbox" name="cond" value="shelf"> 선반·테이블 진열</label>
+          <label><input type="checkbox" name="cond" value="window"> 창가·줄 설치</label>
+          <label><input type="checkbox" name="cond" value="light"> 조명 있음</label>
+        </div></div>
+      <div class="field" data-for="artist"><label for="genre">장르</label>
+        <select id="genre" name="genre"><option value="">선택</option><option>회화</option><option>일러스트</option><option>사진</option><option>도자·공예</option><option>드로잉</option></select></div>
+      <div class="field" data-for="space" hidden><label for="wall">벽 면적·여건</label><input id="wall" name="wall" type="text" placeholder="예: 벽 4m, 레일 조명 있음, 주말 운영"></div>
+      <button class="btn" type="submit">후보 보기</button>
+      <div class="result" id="result" aria-live="polite"></div>
+    </form>
+    <p class="demo">* 데모에서는 등록 데이터 몇 건으로 추천을 흉내 냅니다. 실제 서비스에서는 Google·카카오 로그인 뒤 결과를 확인하고, 운영자 접수 화면으로 이어집니다.</p>
+  </div>
+</section>
+
+<!-- 품목 4: QR 도슨트 미리보기 -->
+<section class="block qr" id="docent">
+  <div class="wrap">
+    <p class="eyebrow">QR 도슨트</p>
+    <h2>작품 옆 QR 하나로, 작가의 설명이 열립니다</h2>
+    <div class="grid grid--2">
+      <div>
+        <p class="lead">전시 통합형 QR 하나와 작품별 QR을 함께 발급합니다. 작가가 직접 설명과 음성을 편집하고, 방문객은 앱 설치 없이 바로 봅니다. 기존에 쓰시던 QR 도구가 있다면 그대로 연결할 수 있는지 먼저 검토합니다.</p>
+        <div class="codes">
+          <div class="code"><img id="qrAll" alt="전시 통합 QR"><div>전시 통합</div></div>
+          <div class="code"><img id="qrOne" alt="작품별 QR"><div>작품 1 · 김하늘</div></div>
+        </div>
+        <p style="margin-top:18px"><a class="btn btn--ghost btn--sm" href="docent.html?w=1" target="_blank" rel="noopener">공개 페이지 미리보기</a></p>
+      </div>
+      <div class="phone"><div class="scr">
+        <img src="assets/img/art-1.webp" alt="">
+        <div class="t">저녁 언덕 · 김하늘</div>
+        <div class="a">캔버스에 유채 · 2026 · 41×32cm<br>퇴근길 버스 창밖으로 본 언덕의 색을 기억하려고 그렸어요.</div>
+        <div class="pl">▶ 작가 음성 설명 · 0:48</div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <div><b style="color:var(--ink)">아트한스푼</b><br>동네 카페·매장과 작가를 연결하는 팝업 전시 서비스<br>사업자 정보 · 이용약관 · 개인정보처리방침 (준비 중)</div>
+    <div>운영자 접수 · 공간 등록 · 작가 등록<br><a href="#match">맞춤 제안 받기</a></div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="js/entry.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
