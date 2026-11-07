@@ -63,6 +63,13 @@ button { font: inherit; }
 .entry[data-chapter="3"] .cap--3 { transform: translate(-50%, 0); }
 .entry[data-chapter="1"] .cap--1 { opacity: calc(var(--p, 0) * 8 - .4); }
 .entry.is-end .cap { opacity: 0 !important; transition-duration: .3s; }
+.entry .pano { position: absolute; inset: 0; z-index: 3; opacity: 0; transition: opacity .9s ease; pointer-events: none; touch-action: pan-y; cursor: grab; }
+.entry .pano.is-on { opacity: 1; pointer-events: auto; }
+.entry .pano.is-drag { cursor: grabbing; }
+.entry .pano canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+.entry .pano-hint { position: absolute; left: 50%; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); background: rgba(0,0,0,.35); padding: 8px 14px; border-radius: 999px; backdrop-filter: blur(6px); pointer-events: none; }
+.entry .pano.is-drag .pano-hint { opacity: 0; }
+.entry.is-end .fade { opacity: 0; }
 .entry .snd { position: absolute; right: var(--gutter); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 5; background: rgba(0,0,0,.35); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; font-size: 12px; letter-spacing: .12em; cursor: pointer; backdrop-filter: blur(6px); }
 .entry .snd[data-on="1"] { border-color: var(--amber); color: var(--amber-2); }
 .entry.is-static .poster { opacity: 1 !important; }
