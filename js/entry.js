@@ -11,7 +11,8 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ctx = canvas.getContext('2d', { alpha: false });
   const dir = () => (innerHeight > innerWidth ? 'v' : 'h');
-  const src = (set, i) => `assets/frames/${set}/${String(i + 1).padStart(3, '0')}.webp`;
+  const FRAMES = (() => { const m = location.search.match(/[?&]frames=([a-z0-9-]+)/); return m ? `assets/frames-${m[1]}` : 'assets/frames'; })();  // ?frames=blender 로 비교용 세트 전환
+  const src = (set, i) => `${FRAMES}/${set}/${String(i + 1).padStart(3, '0')}.webp`;
 
   let set = dir(), count = 0, manifest = null;
   const blobs = new Map();     // i → Blob (압축본, 전부 보관: 5~6MB)
@@ -101,7 +102,7 @@
   function tick(now) { step(now); raf = requestAnimationFrame(tick); }
 
   async function init() {
-    try { manifest = await (await fetch('assets/frames/manifest.json')).json(); } catch { manifest = null; }
+    try { manifest = await (await fetch(`${FRAMES}/manifest.json`)).json(); } catch { manifest = null; }
     if (!manifest) { stage.classList.add('is-static'); return; }   // 프레임 없음 → 포스터만
     if (reduced) stage.classList.add('is-reduced');                 // 모션 축소: 그레인·힌트만 끄고 스크롤 연동은 유지
     count = manifest[set].count;
