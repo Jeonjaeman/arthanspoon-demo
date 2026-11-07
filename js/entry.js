@@ -122,7 +122,7 @@
   const snd = document.getElementById('sndBtn');
   if (snd) {
     const a = new Audio(); a.loop = true; a.volume = 0.45; a.preload = 'none';
-    a.src = 'assets/audio/ambience.mp3';
+    a.src = 'assets/audio/ambience.mp3?v=2';   // v2: 잔잔한 로파이 BGM(Suno), 120초 루프. v1은 카페 소음 효과음
     fetch(a.src, { method: 'HEAD' }).then(r => { if (r.ok) snd.hidden = false; }).catch(() => {});
     snd.addEventListener('click', () => {
       if (a.paused) { a.play().then(() => { snd.dataset.on = '1'; snd.textContent = '소리 끄기'; }).catch(() => {}); }
