@@ -66,9 +66,19 @@ button { font: inherit; }
 .entry .pano { position: absolute; inset: 0; z-index: 3; opacity: 0; transition: opacity .9s ease; pointer-events: none; touch-action: pan-y; cursor: grab; }
 .entry .pano.is-on { opacity: 1; pointer-events: auto; }
 .entry .pano.is-drag { cursor: grabbing; }
-.entry .pano canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
-.entry .pano-hint { position: absolute; left: 50%; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); background: rgba(0,0,0,.35); padding: 8px 14px; border-radius: 999px; backdrop-filter: blur(6px); pointer-events: none; }
-.entry .pano.is-drag .pano-hint { opacity: 0; }
+.entry .pano canvas { position: absolute; inset: 0; z-index: 0; width: 100% !important; height: 100% !important; }
+.entry .pano-intro, .entry .pano-next { z-index: 2; }   /* 캔버스는 나중에 붙으므로 안내·버튼을 위로 */
+/* 멈춤 구간: 파노라마가 켜지면 스크롤을 잠그고(is-lock) 둘러보라는 안내와 '계속 보기' 버튼을 띄운다 */
+.entry .pano.is-lock { touch-action: none; }
+.entry .pano-intro { position: absolute; left: 50%; top: 17%; transform: translate(-50%, 10px); display: grid; gap: 10px; justify-items: center; text-align: center; pointer-events: none; opacity: 0; transition: opacity .6s ease .4s, transform .6s ease .4s; }
+.entry .pano.is-lock .pano-intro { opacity: 1; transform: translate(-50%, 0); }
+.entry .pano-intro b { font-family: 'Noto Serif KR', serif; font-weight: 500; font-size: clamp(22px, 3.2vw, 34px); color: var(--ink); text-shadow: 0 2px 20px rgba(0,0,0,.7); }
+.entry .pano-intro span { font-size: 11px; letter-spacing: .14em; color: var(--ink-2); background: rgba(0,0,0,.38); padding: 8px 14px; border-radius: 999px; backdrop-filter: blur(6px); }
+.entry .pano.is-drag .pano-intro, .entry .pano.is-quiet .pano-intro { opacity: 0; transition-delay: 0s; }
+.entry .pano-next { position: absolute; left: 50%; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: none; align-items: center; gap: 12px; font: inherit; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink); background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.18); padding: 10px 18px; border-radius: 999px; backdrop-filter: blur(6px); cursor: pointer; }
+.entry .pano.is-lock .pano-next { display: inline-flex; }
+.entry .pano-next:hover { background: rgba(0,0,0,.6); border-color: var(--amber); }
+.entry .pano-next i { width: 1px; height: 18px; background: var(--amber); transform-origin: top; animation: drop 1.8s ease-in-out infinite; }
 .entry.is-end .fade { opacity: 0; }
 .entry .snd { position: absolute; right: var(--gutter); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 5; background: rgba(0,0,0,.35); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; font-size: 12px; letter-spacing: .12em; cursor: pointer; backdrop-filter: blur(6px); }
 .entry .snd[data-on="1"] { border-color: var(--amber); color: var(--amber-2); }

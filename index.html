@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=6">
 <link rel="preload" as="image" href="assets/img/door-h.webp" media="(orientation: landscape)">
 <link rel="preload" as="image" href="assets/img/door-v.webp" media="(orientation: portrait)">
 </head>
@@ -50,7 +50,10 @@
     <div class="cap cap--2"><b>02 · 문을 열면</b><span>오늘은 조금<br>다른 불빛</span></div>
     <div class="cap cap--3"><b>03 · 전시가 됩니다</b><span>커피 한 잔 값으로 만나는<br>동네 작가의 그림</span></div>
     <div class="hint"><i></i>스크롤</div>
-    <div class="pano" id="pano" aria-label="실내 둘러보기"><div class="pano-hint">드래그해서 둘러보기</div></div>
+    <div class="pano" id="pano" aria-label="실내 둘러보기">
+      <div class="pano-intro"><b>실내를 둘러보세요</b><span>마우스를 움직이거나 드래그 · 손가락으로 끌기</span></div>
+      <button class="pano-next" id="panoNext" type="button">계속 보기<i></i></button>
+    </div>
     <button class="snd" id="sndBtn" hidden>소리 켜기</button>
     <div class="fade"></div>
   </section>
@@ -188,7 +191,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.min.js" defer></script>
 <script src="js/entry.js?v=7"></script>
-<script src="js/pano.js?v=2" defer></script>
+<script src="js/pano.js?v=3" defer></script>
 <script src="js/main.js?v=5"></script>
 </body>
 </html>
