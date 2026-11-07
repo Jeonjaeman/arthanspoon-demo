@@ -97,6 +97,7 @@
     stage.style.setProperty('--p', p.toFixed(4));
     stage.dataset.chapter = p < 0.3 ? '1' : p < 0.72 ? '2' : '3';
     stage.classList.toggle('is-end', p > 0.98);
+    stage.classList.toggle('is-past', p > 0.26);   // 제목 opacity = 1 - p*4 → 0.25에서 0
     if (debug) debug.textContent = `p ${p.toFixed(3)}  frame ${i}/${count - 1}  shown ${shown}  blobs ${blobs.size}  bitmaps ${bitmaps.size}  ticks ${ticks}  ${set}`;
   }
   function tick(now) { step(now); raf = requestAnimationFrame(tick); }

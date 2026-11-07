@@ -46,6 +46,7 @@ button { font: inherit; }
 .entry .hero { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; text-align: center; padding: 0 var(--gutter); pointer-events: none;
   opacity: calc(1 - var(--p, 0) * 4); transform: translateY(calc(var(--p, 0) * -120px)); }
 .entry .hero > * { pointer-events: auto; }
+.entry.is-past .hero { visibility: hidden; }   /* 투명해진 제목·버튼이 가운데에서 파노라마 드래그를 가로채지 않게 */
 .entry .hero h1 { font-size: clamp(34px, 6vw, 72px); line-height: 1.15; text-shadow: 0 4px 30px rgba(0,0,0,.55); }
 .entry .hero h1 em { font-style: normal; color: var(--amber-2); }
 .entry .hero p { color: var(--ink-2); font-size: clamp(15px, 1.6vw, 19px); margin: 14px 0 26px; text-shadow: 0 2px 16px rgba(0,0,0,.6); }
